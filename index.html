@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +17,36 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow: hidden;
+        }
+
+        .experience-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+
+        .beach-btn {
+            background: linear-gradient(90deg, #87CEEB, #F4A460);
+            color: #333;
+        }
+
+        .forest-btn {
+            background: linear-gradient(90deg, #228B22, #B2FF59);
+            color: #333;
+        }
+
+        .experience-btn:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.13);
         }
 
         .ar-viewport {
@@ -57,8 +88,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .mood-tracker {
@@ -106,10 +144,21 @@
             font-size: 18px;
         }
 
-        .mood-icon { background: linear-gradient(45deg, #ff6b6b, #ffa726); }
-        .breathing-icon { background: linear-gradient(45deg, #4ecdc4, #44a08d); }
-        .stress-icon { background: linear-gradient(45deg, #667eea, #764ba2); }
-        .focus-icon { background: linear-gradient(45deg, #f093fb, #f5576c); }
+        .mood-icon {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+        }
+
+        .breathing-icon {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .stress-icon {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .focus-icon {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
 
         .widget-title {
             font-size: 16px;
@@ -171,8 +220,15 @@
         }
 
         @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
         }
 
         .stress-level {
@@ -249,8 +305,13 @@
         }
 
         @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         .focus-timer {
@@ -306,16 +367,55 @@
             opacity: 1;
             transform: translateX(-50%) translateY(10px);
         }
+
+        /* Mobile layout for wellness widgets */
+        @media (max-width: 500px) {
+            .wellness-widget {
+                position: static !important;
+                width: 90vw !important;
+                margin: 18px auto !important;
+                display: block;
+                left: unset !important;
+                right: unset !important;
+                top: unset !important;
+                bottom: unset !important;
+                animation: none !important;
+            }
+
+            .ar-overlay {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding-top: 18px;
+                pointer-events: auto;
+            }
+
+            .controls {
+                position: fixed;
+                bottom: 1px;
+                display: flex;
+                gap: 15px;
+                left: -153px;
+                transform: unset;
+                z-index: 1000;
+                scale: 0.6;
+            }
+            .controls button{
+                transform: none;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <div style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 2000; text-align: center; display: flex; gap: 24px;">
-        <a href="beach_experience.html" style="display: inline-block; padding: 16px 32px; background: linear-gradient(90deg, #87CEEB, #F4A460); color: #333; font-size: 1.3rem; font-weight: bold; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: background 0.3s;">🌴 Try the Immersive Beach Experience</a>
-        <a href="forest_experience.html" style="display: inline-block; padding: 16px 32px; background: linear-gradient(90deg, #228B22, #B2FF59); color: #333; font-size: 1.3rem; font-weight: bold; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: background 0.3s;">🌲 Try the Immersive Forest Experience</a>
-    </div>
+
     <div class="ar-viewport">
         <div class="ar-frame"></div>
-        
+
         <div class="ar-overlay">
             <!-- Mood Tracker Widget -->
             <div class="wellness-widget mood-tracker" onclick="interactWithWidget('mood')">
@@ -334,7 +434,8 @@
                     <span class="mood-emoji" onclick="selectMood('😰')">😰</span>
                 </div>
                 <div class="ai-insight">
-                    AI Analysis: Your mood patterns suggest peak focus around 10 AM. Consider scheduling important tasks then.
+                    AI Analysis: Your mood patterns suggest peak focus around 10 AM. Consider scheduling important tasks
+                    then.
                 </div>
             </div>
 
@@ -401,7 +502,13 @@
             <button class="control-btn" onclick="toggleWidgets()">Toggle Widgets</button>
             <button class="control-btn" onclick="recalibrate()">Recalibrate AR</button>
             <button class="control-btn" onclick="aiAnalysis()">AI Analysis</button>
+            <button class="experience-btn beach-btn" onclick="navigateToExperience('beach_experience.html')">🌴 Beach
+                Experience</button>
+            <button class="experience-btn forest-btn" onclick="navigateToExperience('forest_experience.html')">🌲 Forest
+                Experience</button>
+
         </div>
+
 
         <div class="notification" id="notification"></div>
     </div>
@@ -414,7 +521,7 @@
 
         function interactWithWidget(type) {
             showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} widget activated!`);
-            
+
             // Add interactive effects
             const widgets = document.querySelectorAll('.wellness-widget');
             widgets.forEach(widget => {
@@ -428,7 +535,7 @@
         function selectMood(emoji) {
             event.stopPropagation();
             showNotification(`Mood logged: ${emoji}`);
-            
+
             // Update AI insight based on mood
             const moodWidget = document.querySelector('.mood-tracker .ai-insight');
             const insights = {
@@ -453,7 +560,7 @@
 
         function recalibrate() {
             showNotification('AR recalibration complete');
-            
+
             // Simulate recalibration animation
             const frame = document.querySelector('.ar-frame');
             frame.style.animation = 'none';
@@ -464,10 +571,10 @@
 
         function aiAnalysis() {
             showNotification('AI analyzing your wellness patterns...');
-            
+
             setTimeout(() => {
                 showNotification('Analysis complete! Check your widgets for insights.');
-                
+
                 // Update insights in widgets
                 const insights = document.querySelectorAll('.ai-insight');
                 insights.forEach((insight, index) => {
@@ -487,7 +594,7 @@
                 timer = setInterval(() => {
                     timeLeft--;
                     updateTimerDisplay();
-                    
+
                     if (timeLeft <= 0) {
                         clearInterval(timer);
                         timerRunning = false;
@@ -527,23 +634,25 @@
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.classList.add('show');
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
         }
-
+        function navigateToExperience(url) {
+            window.location.href = url;
+        }
         // Initialize dynamic effects
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Simulate real-time stress monitoring
             setInterval(() => {
                 const stressIndicator = document.querySelector('.stress-indicator');
                 const stressLevel = document.querySelector('.stress-level span');
                 const progressFill = document.querySelector('.progress-fill');
-                
+
                 const stress = Math.random() * 100;
                 let level, color;
-                
+
                 if (stress < 30) {
                     level = 'Low';
                     color = '#4caf50';
@@ -554,7 +663,7 @@
                     level = 'High';
                     color = '#f44336';
                 }
-                
+
                 stressIndicator.style.background = color;
                 stressLevel.textContent = `Stress Level: ${level}`;
                 progressFill.style.width = `${stress}%`;
@@ -562,4 +671,5 @@
         });
     </script>
 </body>
+
 </html>
