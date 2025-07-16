@@ -295,8 +295,8 @@
 
         .weather-indicator {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 16px;
+    left: 130px;
             background: rgba(255, 255, 255, 0.9);
             padding: 15px;
             border-radius: 15px;
@@ -629,6 +629,13 @@
     </style>
 </head>
 <body>
+    <div style="position: fixed; top: 0; left: 0; width: 100%; z-index: 3000; pointer-events: none;">
+      <div style="display: flex; justify-content: flex-start; width: 100%;">
+        <a href="index.html" id="back-btn" style="margin: 16px 0 0 16px; pointer-events: auto; display: flex; align-items: center; text-decoration: none; background: rgba(0,0,0,0.7); color: #fff; padding: 10px 18px 10px 12px; border-radius: 10px; font-size: 17px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: background 0.2s;">
+          <span style="font-size: 1.3em; margin-right: 8px;">&#8592;</span> Back
+        </a>
+      </div>
+    </div>
     <div class="beach-scene">
         <div class="sky"></div>
         
