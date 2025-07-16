@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immersive Beach Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #F4A460 60%, #F4A460 100%);
+            height: 100vh;
+            cursor: none;
+        }
+
+        .beach-scene {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D4EA 50%, #B8E6FF 100%);
+            z-index: 1;
+        }
+
+        .sun {
+            position: absolute;
+            top: 15%;
+            right: 20%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+            border-radius: 50%;
+            animation: sunGlow 3s ease-in-out infinite alternate;
+            z-index: 2;
+        }
+
+        @keyframes sunGlow {
+            0% { box-shadow: 0 0 20px #FFD700; transform: scale(1); }
+            100% { box-shadow: 0 0 40px #FFD700, 0 0 60px #FFA500; transform: scale(1.05); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            opacity: 0.7;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cloud2 {
+            width: 80px;
+            height: 30px;
+            top: 20%;
+            left: 70%;
+            animation-delay: -5s;
+        }
+
+        .cloud3 {
+            width: 120px;
+            height: 45px;
+            top: 5%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            25% { transform: translateX(20px) translateY(-10px); }
+            50% { transform: translateX(-10px) translateY(5px); }
+            75% { transform: translateX(15px) translateY(-5px); }
+        }
+
+        .ocean {
+            position: absolute;
+            bottom: 40%;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to bottom, #4682B4 0%, #1E90FF 50%, #0066CC 100%);
+            z-index: 3;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,60 C300,100 600,20 900,60 C1050,90 1150,40 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.3)"/></svg>') repeat-x;
+            animation: waveMove 15s linear infinite;
+            z-index: 4;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.6;
+            height: 80px;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -10s;
+            opacity: 0.4;
+            height: 60px;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .beach {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to bottom, #F4A460 0%, #DEB887 50%, #D2B48C 100%);
+            z-index: 5;
+        }
+
+        .palm-tree {
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            width: 60px;
+            height: 200px;
+            z-index: 6;
+        }
+
+        .palm-trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 150px;
+            background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
+            border-radius: 10px;
+            animation: sway 4s ease-in-out infinite;
+        }
+
+        .palm-leaves {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #228B22 0%, #32CD32 100%);
+            border-radius: 50%;
+            animation: palmSway 4s ease-in-out infinite;
+        }
+
+        .palm-leaves::before,
+        .palm-leaves::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background: linear-gradient(45deg, #228B22 0%, #32CD32 100%);
+            border-radius: 50%;
+        }
+
+        .palm-leaves::before {
+            top: -20px;
+            left: -10px;
+            transform: rotate(-30deg);
+        }
+
+        .palm-leaves::after {
+            top: -20px;
+            right: -10px;
+            transform: rotate(30deg);
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(3deg); }
+        }
+
+        @keyframes palmSway {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) rotate(5deg); }
+        }
+
+        .seagull {
+            position: absolute;
+            width: 20px;
+            height: 15px;
+            background: white;
+            border-radius: 50%;
+            animation: fly 25s linear infinite;
+            z-index: 7;
+        }
+
+        .seagull::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 8px;
+            background: white;
+            top: 3px;
+            left: -5px;
+            border-radius: 50%;
+        }
+
+        .seagull1 {
+            top: 25%;
+            left: -50px;
+            animation-delay: 0s;
+        }
+
+        .seagull2 {
+            top: 15%;
+            left: -80px;
+            animation-delay: -8s;
+        }
+
+        @keyframes fly {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(40vw) translateY(-20px); }
+            50% { transform: translateX(80vw) translateY(10px); }
+            75% { transform: translateX(120vw) translateY(-10px); }
+            100% { transform: translateX(150vw) translateY(0); }
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: bubble 10s linear infinite;
+            z-index: 8;
+        }
+
+        @keyframes bubble {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .weather-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .temp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .condition {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .time-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            animation: ripple 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+
+        .notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .breathing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .breathing-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .breathing-container {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(135, 206, 235, 0.8) 0%, rgba(70, 130, 180, 0.6) 100%);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: breathingIdle 2s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(135, 206, 235, 0.5);
+        }
+
+        .breathing-circle.inhale {
+            animation: breatheIn 4s ease-in-out infinite;
+        }
+
+        .breathing-circle.exhale {
+            animation: breatheOut 4s ease-in-out infinite;
+        }
+
+        .breathing-circle.box-breathing {
+            animation: boxBreathing 16s ease-in-out infinite;
+        }
+
+        .breathing-circle.four-seven-eight {
+            animation: fourSevenEight 19s ease-in-out infinite;
+        }
+
+        @keyframes breathingIdle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes breatheIn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        @keyframes breatheOut {
+            0%, 100% { transform: scale(1.5); }
+            50% { transform: scale(1); }
+        }
+
+        @keyframes boxBreathing {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.4); }
+            50% { transform: scale(1.4); }
+            75% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fourSevenEight {
+            0% { transform: scale(1); }
+            21% { transform: scale(1.3); }
+            58% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .breathing-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .breathing-instruction {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .breathing-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .breathing-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .breathing-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .breathing-btn.active {
+            background: rgba(135, 206, 235, 0.8);
+            border-color: rgba(135, 206, 235, 1);
+        }
+
+        .breathing-timer {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .breathing-phase {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .breathing-progress {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .breathing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #87CEEB, #4682B4);
+            border-radius: 3px;
+            transition: width 0.1s ease;
+        }
+
+        .close-breathing {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-breathing:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .breathing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #87CEEB;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .breathing-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .breathing-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .breathing-text {
+                font-size: 20px;
+            }
+            
+            .breathing-timer {
+                font-size: 36px;
+            }
+            
+            .breathing-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+            
+            .weather-indicator,
+            .time-indicator {
+                padding: 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="beach-scene">
+        <div class="sky"></div>
+        
+        <div class="sun"></div>
+        
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+        
+        <div class="ocean">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        
+        <div class="beach"></div>
+        
+        <div class="palm-tree">
+            <div class="palm-trunk"></div>
+            <div class="palm-leaves"></div>
+        </div>
+        
+        <div class="seagull seagull1"></div>
+        <div class="seagull seagull2"></div>
+        
+        <div class="weather-indicator">
+            <div class="temp">78°F</div>
+            <div class="condition">Sunny & Clear</div>
+        </div>
+        
+        <div class="time-indicator">
+            <div id="current-time">2:30 PM</div>
+            <div style="font-size: 12px; margin-top: 5px;">Beach Time</div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="sound-btn" onclick="toggleSound()">🔊 Ocean Sounds</button>
+            <button class="control-btn" onclick="changeWeather()">☀️ Weather</button>
+            <button class="control-btn" onclick="addSeagulls()">🐦 More Birds</button>
+            <button class="control-btn" onclick="createBubbles()">🫧 Bubbles</button>
+            <button class="control-btn" onclick="startBreathingExercise()">🫁 Breathing Exercise</button>
+        </div>
+        
+        <div class="breathing-overlay" id="breathing-overlay">
+            <div class="breathing-container">
+                <button class="close-breathing" onclick="closeBreathingExercise()">×</button>
+                
+                <div class="breathing-text">Ocean Breathing</div>
+                <div class="breathing-instruction" id="breathing-instruction">
+                    Choose a breathing technique to begin your relaxation journey
+                </div>
+                
+                <div class="breathing-controls">
+                    <button class="breathing-btn" onclick="setBreathingType('basic')">Basic Breathing</button>
+                    <button class="breathing-btn" onclick="setBreathingType('box')">Box Breathing</button>
+                    <button class="breathing-btn" onclick="setBreathingType('478')">4-7-8 Technique</button>
+                    <button class="breathing-btn" onclick="setBreathingType('ocean')">Ocean Breathing</button>
+                </div>
+                
+                <div class="breathing-circle" id="breathing-circle">
+                    <div class="breathing-timer" id="breathing-timer">●</div>
+                </div>
+                
+                <div class="breathing-phase" id="breathing-phase">Ready to Begin</div>
+                
+                <div class="breathing-progress">
+                    <div class="breathing-progress-fill" id="breathing-progress"></div>
+                </div>
+                
+                <div class="breathing-controls">
+                    <button class="breathing-btn" id="start-breathing" onclick="toggleBreathing()">Start</button>
+                    <button class="breathing-btn" onclick="resetBreathing()">Reset</button>
+                </div>
+                
+                <div class="breathing-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="breath-count">0</div>
+                        <div class="stat-label">Breaths</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="session-time">0:00</div>
+                        <div class="stat-label">Session</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stress-level">Low</div>
+                        <div class="stat-label">Stress</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cursor" id="cursor"></div>
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script>
+        let soundEnabled = false;
+        let audioContext = null;
+        let oceanSound = null;
+        let currentWeather = 'sunny';
+        let timeOfDay = 'day';
+        
+        // Breathing exercise variables
+        let breathingActive = false;
+        let breathingType = 'basic';
+        let breathingTimer = null;
+        let breathingPhase = 'idle';
+        let breathingCount = 0;
+        let sessionStartTime = null;
+        let currentBreathingStep = 0;
+        
+        const breathingPatterns = {
+            basic: {
+                name: 'Basic Breathing',
+                pattern: [
+                    { phase: 'Inhale', duration: 4, instruction: 'Breathe in slowly through your nose' },
+                    { phase: 'Exhale', duration: 4, instruction: 'Breathe out slowly through your mouth' }
+                ]
+            },
+            box: {
+                name: 'Box Breathing',
+                pattern: [
+                    { phase: 'Inhale', duration: 4, instruction: 'Breathe in for 4 seconds' },
+                    { phase: 'Hold', duration: 4, instruction: 'Hold your breath for 4 seconds' },
+                    { phase: 'Exhale', duration: 4, instruction: 'Breathe out for 4 seconds' },
+                    { phase: 'Hold', duration: 4, instruction: 'Hold empty lungs for 4 seconds' }
+                ]
+            },
+            478: {
+                name: '4-7-8 Technique',
+                pattern: [
+                    { phase: 'Inhale', duration: 4, instruction: 'Breathe in through nose for 4 seconds' },
+                    { phase: 'Hold', duration: 7, instruction: 'Hold your breath for 7 seconds' },
+                    { phase: 'Exhale', duration: 8, instruction: 'Breathe out through mouth for 8 seconds' }
+                ]
+            },
+            ocean: {
+                name: 'Ocean Breathing',
+                pattern: [
+                    { phase: 'Inhale', duration: 5, instruction: 'Breathe in like the ocean wave rising' },
+                    { phase: 'Pause', duration: 1, instruction: 'Feel the calm at the peak' },
+                    { phase: 'Exhale', duration: 6, instruction: 'Breathe out like the wave receding' },
+                    { phase: 'Pause', duration: 1, instruction: 'Rest in the peaceful stillness' }
+                ]
+            }
+        };
+
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Click ripple effect
+        document.addEventListener('click', (e) => {
+            createRipple(e.clientX, e.clientY);
+        });
+
+        function createRipple(x, y) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = (x - 10) + 'px';
+            ripple.style.top = (y - 10) + 'px';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+        }
+
+        // Sound synthesis for ocean waves
+        function createOceanSound() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const bufferSize = audioContext.sampleRate * 2;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Generate white noise
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+            
+            // Filter for ocean-like sound
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 300;
+            
+            const filter2 = audioContext.createBiquadFilter();
+            filter2.type = 'bandpass';
+            filter2.frequency.value = 100;
+            filter2.Q.value = 0.5;
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.1;
+            
+            source.connect(filter);
+            filter.connect(filter2);
+            filter2.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            return source;
+        }
+
+        function toggleSound() {
+            const btn = document.getElementById('sound-btn');
+            
+            if (!soundEnabled) {
+                try {
+                    oceanSound = createOceanSound();
+                    oceanSound.start();
+                    soundEnabled = true;
+                    btn.textContent = '🔇 Ocean Sounds';
+                    btn.classList.add('active');
+                    showNotification('Ocean sounds enabled 🌊');
+                } catch (error) {
+                    showNotification('Sound not available in this browser');
+                }
+            } else {
+                if (oceanSound) {
+                    oceanSound.stop();
+                    oceanSound = null;
+                }
+                soundEnabled = false;
+                btn.textContent = '🔊 Ocean Sounds';
+                btn.classList.remove('active');
+                showNotification('Ocean sounds disabled');
+            }
+        }
+
+        function changeWeather() {
+            const weathers = ['sunny', 'cloudy', 'sunset', 'night'];
+            const currentIndex = weathers.indexOf(currentWeather);
+            currentWeather = weathers[(currentIndex + 1) % weathers.length];
+            
+            const sky = document.querySelector('.sky');
+            const sun = document.querySelector('.sun');
+            const beach = document.querySelector('.beach');
+            const tempEl = document.querySelector('.temp');
+            const conditionEl = document.querySelector('.condition');
+            
+            switch(currentWeather) {
+                case 'sunny':
+                    sky.style.background = 'linear-gradient(to bottom, #87CEEB 0%, #98D4EA 50%, #B8E6FF 100%)';
+                    sun.style.background = 'radial-gradient(circle, #FFD700 0%, #FFA500 100%)';
+                    beach.style.background = 'linear-gradient(to bottom, #F4A460 0%, #DEB887 50%, #D2B48C 100%)';
+                    tempEl.textContent = '78°F';
+                    conditionEl.textContent = 'Sunny & Clear';
+                    break;
+                case 'cloudy':
+                    sky.style.background = 'linear-gradient(to bottom, #708090 0%, #778899 50%, #B0C4DE 100%)';
+                    sun.style.background = 'radial-gradient(circle, #F0E68C 0%, #BDB76B 100%)';
+                    beach.style.background = 'linear-gradient(to bottom, #D2B48C 0%, #BC9A6A 50%, #A0826D 100%)';
+                    tempEl.textContent = '72°F';
+                    conditionEl.textContent = 'Partly Cloudy';
+                    break;
+                case 'sunset':
+                    sky.style.background = 'linear-gradient(to bottom, #FF6B35 0%, #FF8C42 30%, #FFA726 60%, #FFB74D 100%)';
+                    sun.style.background = 'radial-gradient(circle, #FF4500 0%, #FF6347 100%)';
+                    beach.style.background = 'linear-gradient(to bottom, #D2691E 0%, #CD853F 50%, #DEB887 100%)';
+                    tempEl.textContent = '75°F';
+                    conditionEl.textContent = 'Beautiful Sunset';
+                    break;
+                case 'night':
+                    sky.style.background = 'linear-gradient(to bottom, #191970 0%, #1E1E3F 50%, #2F2F4F 100%)';
+                    sun.style.background = 'radial-gradient(circle, #F5F5DC 0%, #FFFACD 100%)';
+                    beach.style.background = 'linear-gradient(to bottom, #2F4F4F 0%, #36454F 50%, #4A4A4A 100%)';
+                    tempEl.textContent = '68°F';
+                    conditionEl.textContent = 'Clear Night';
+                    break;
+            }
+            
+            showNotification(`Weather changed to ${currentWeather}`);
+        }
+
+        function addSeagulls() {
+            const seagull = document.createElement('div');
+            seagull.className = 'seagull';
+            seagull.style.top = (Math.random() * 30 + 10) + '%';
+            seagull.style.left = '-50px';
+            seagull.style.animationDelay = '0s';
+            seagull.style.animationDuration = (Math.random() * 10 + 20) + 's';
+            
+            document.querySelector('.beach-scene').appendChild(seagull);
+            
+            setTimeout(() => {
+                seagull.remove();
+            }, 30000);
+            
+            showNotification('New seagull added to the scene! 🐦');
+        }
+
+        function createBubbles() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.style.left = Math.random() * 100 + '%';
+                    bubble.style.width = bubble.style.height = (Math.random() * 20 + 10) + 'px';
+                    bubble.style.animationDelay = (Math.random() * 2) + 's';
+                    bubble.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                    
+                    document.querySelector('.beach-scene').appendChild(bubble);
+                    
+                    setTimeout(() => {
+                        bubble.remove();
+                    }, 15000);
+                }, i * 200);
+            }
+            
+            showNotification('Magical bubbles floating! 🫧');
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Breathing Exercise Functions
+        function startBreathingExercise() {
+            document.getElementById('breathing-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            showNotification('Welcome to your breathing sanctuary 🫁');
+            
+            // Auto-enable ocean sounds for breathing
+            if (!soundEnabled) {
+                toggleSound();
+            }
+        }
+
+        function closeBreathingExercise() {
+            document.getElementById('breathing-overlay').classList.remove('active');
+            document.body.style.overflow = 'hidden';
+            resetBreathing();
+        }
+
+        function setBreathingType(type) {
+            breathingType = type;
+            const pattern = breathingPatterns[type];
+            
+            // Update UI
+            document.querySelectorAll('.breathing-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.getElementById('breathing-instruction').textContent = 
+                `${pattern.name} selected. Click Start when you're ready to begin.`;
+            
+            resetBreathing();
+        }
+
+        function toggleBreathing() {
+            const startBtn = document.getElementById('start-breathing');
+            
+            if (!breathingActive) {
+                startBreathingSession();
+                startBtn.textContent = 'Stop';
+                startBtn.classList.add('active');
+            } else {
+                stopBreathingSession();
+                startBtn.textContent = 'Start';
+                startBtn.classList.remove('active');
+            }
+        }
+
+        function startBreathingSession() {
+            breathingActive = true;
+            sessionStartTime = Date.now();
+            breathingCount = 0;
+            currentBreathingStep = 0;
+            
+            executeBreathingStep();
+        }
+
+        function stopBreathingSession() {
+            breathingActive = false;
+            if (breathingTimer) {
+                clearTimeout(breathingTimer);
+                breathingTimer = null;
+            }
+            
+            const circle = document.getElementById('breathing-circle');
+            circle.className = 'breathing-circle';
+            
+            document.getElementById('breathing-phase').textContent = 'Session Paused';
+            document.getElementById('breathing-instruction').textContent = 
+                'Great job! You can resume whenever you\'re ready.';
+        }
+
+        function executeBreathingStep() {
+            if (!breathingActive) return;
+            
+            const pattern = breathingPatterns[breathingType];
+            const step = pattern.pattern[currentBreathingStep];
+            
+            // Update UI
+            document.getElementById('breathing-phase').textContent = step.phase;
+            document.getElementById('breathing-instruction').textContent = step.instruction;
+            
+            // Update circle animation
+            const circle = document.getElementById('breathing-circle');
+            circle.className = 'breathing-circle';
+            
+            if (breathingType === 'basic') {
+                circle.classList.add(step.phase === 'Inhale' ? 'inhale' : 'exhale');
+            } else if (breathingType === 'box') {
+                circle.classList.add('box-breathing');
+            } else if (breathingType === '478') {
+                circle.classList.add('four-seven-eight');
+            } else if (breathingType === 'ocean') {
+                circle.classList.add(step.phase === 'Inhale' ? 'inhale' : 'exhale');
+            }
+            
+            // Start countdown
+            startBreathingCountdown(step.duration);
+            
+            // Schedule next step
+            breathingTimer = setTimeout(() => {
+                currentBreathingStep = (currentBreathingStep + 1) % pattern.pattern.length;
+                
+                // Count completed breaths (when we return to start of pattern)
+                if (currentBreathingStep === 0) {
+                    breathingCount++;
+                    updateBreathingStats();
+                }
+                
+                executeBreathingStep();
+            }, step.duration * 1000);
+        }
+
+        function startBreathingCountdown(duration) {
+            let timeLeft = duration;
+            const timerElement = document.getElementById('breathing-timer');
+            const progressElement = document.getElementById('breathing-progress');
+            
+            function updateCountdown() {
+                if (!breathingActive) return;
+                
+                timerElement.textContent = timeLeft;
+                const progress = ((duration - timeLeft) / duration) * 100;
+                progressElement.style.width = progress + '%';
+                
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    progressElement.style.width = '100%';
+                    setTimeout(() => {
+                        progressElement.style.width = '0%';
+                    }, 200);
+                }
+            }
+            
+            updateCountdown();
+        }
+
+        function updateBreathingStats() {
+            document.getElementById('breath-count').textContent = breathingCount;
+            
+            if (sessionStartTime) {
+                const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('session-time').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Update stress level based on breathing count
+            let stressLevel = 'High';
+            if (breathingCount >= 10) stressLevel = 'Low';
+            else if (breathingCount >= 5) stressLevel = 'Medium';
+            
+            document.getElementById('stress-level').textContent = stressLevel;
+        }
+
+        function resetBreathing() {
+            stopBreathingSession();
+            
+            breathingCount = 0;
+            sessionStartTime = null;
+            currentBreathingStep = 0;
+            
+            document.getElementById('breathing-timer').textContent = '●';
+            document.getElementById('breathing-phase').textContent = 'Ready to Begin';
+            document.getElementById('breathing-progress').style.width = '0%';
+            document.getElementById('breath-count').textContent = '0';
+            document.getElementById('session-time').textContent = '0:00';
+            document.getElementById('stress-level').textContent = 'High';
+            document.getElementById('start-breathing').textContent = 'Start';
+            document.getElementById('start-breathing').classList.remove('active');
+            
+            const circle = document.getElementById('breathing-circle');
+            circle.className = 'breathing-circle';
+        }
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('current-time').textContent = timeStr;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Add some initial ambiance
+            setTimeout(() => {
+                showNotification('Welcome to your virtual beach! 🏖️');
+            }, 1000);
+            
+            // Periodically add natural elements
+            setInterval(addSeagulls, 45000);
+            setInterval(createBubbles, 60000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 's':
+                case 'S':
+                    toggleSound();
+                    break;
+                case 'w':
+                case 'W':
+                    changeWeather();
+                    break;
+                case 'b':
+                case 'B':
+                    addSeagulls();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    createBubbles();
+                    break;
+                case 'r':
+                case 'R':
+                    startBreathingExercise();
+                    break;
+                case 'Escape':
+                    closeBreathingExercise();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

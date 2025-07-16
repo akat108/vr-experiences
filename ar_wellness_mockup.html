@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Workplace Wellness Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .ar-viewport {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="%23f8f9fa"/><rect x="100" y="600" width="1000" height="200" fill="%23e9ecef" rx="10"/><rect x="200" y="400" width="800" height="300" fill="%23dee2e6" rx="8"/><rect x="300" y="450" width="600" height="200" fill="%23adb5bd" rx="5"/><circle cx="150" cy="100" r="30" fill="%23495057"/><rect x="50" y="150" width="200" height="100" fill="%23343a40" rx="5"/><rect x="900" y="100" width="250" height="150" fill="%23495057" rx="8"/></svg>') center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wellness-widget {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: float 3s ease-in-out infinite;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wellness-widget:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mood-tracker {
+            top: 15%;
+            left: 10%;
+            width: 280px;
+            animation-delay: 0s;
+        }
+
+        .breathing-guide {
+            top: 20%;
+            right: 12%;
+            width: 250px;
+            animation-delay: 1s;
+        }
+
+        .stress-monitor {
+            bottom: 25%;
+            left: 8%;
+            width: 300px;
+            animation-delay: 2s;
+        }
+
+        .focus-enhancer {
+            bottom: 30%;
+            right: 10%;
+            width: 260px;
+            animation-delay: 0.5s;
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .widget-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .mood-icon { background: linear-gradient(45deg, #ff6b6b, #ffa726); }
+        .breathing-icon { background: linear-gradient(45deg, #4ecdc4, #44a08d); }
+        .stress-icon { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .focus-icon { background: linear-gradient(45deg, #f093fb, #f5576c); }
+
+        .widget-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .widget-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            border-radius: 4px;
+            transition: width 2s ease;
+        }
+
+        .mood-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .mood-emoji {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 5px;
+        }
+
+        .mood-emoji:hover {
+            transform: scale(1.2);
+        }
+
+        .breathing-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .stress-level {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .stress-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #4ecdc4;
+        }
+
+        .ai-insight {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #555;
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        .ar-frame {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .ar-frame::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 15px;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .focus-timer {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .timer-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            padding: 8px 16px;
+            background: #f093fb;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .timer-btn:hover {
+            background: #f5576c;
+            transform: translateY(-1px);
+        }
+
+        .notification {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(76, 175, 80, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="ar-viewport">
+        <div class="ar-frame"></div>
+        
+        <div class="ar-overlay">
+            <!-- Mood Tracker Widget -->
+            <div class="wellness-widget mood-tracker" onclick="interactWithWidget('mood')">
+                <div class="widget-header">
+                    <div class="widget-icon mood-icon">😊</div>
+                    <div>
+                        <div class="widget-title">AI Mood Tracker</div>
+                        <div class="widget-subtitle">How are you feeling?</div>
+                    </div>
+                </div>
+                <div class="mood-selector">
+                    <span class="mood-emoji" onclick="selectMood('😄')">😄</span>
+                    <span class="mood-emoji" onclick="selectMood('😊')">😊</span>
+                    <span class="mood-emoji" onclick="selectMood('😐')">😐</span>
+                    <span class="mood-emoji" onclick="selectMood('😔')">😔</span>
+                    <span class="mood-emoji" onclick="selectMood('😰')">😰</span>
+                </div>
+                <div class="ai-insight">
+                    AI Analysis: Your mood patterns suggest peak focus around 10 AM. Consider scheduling important tasks then.
+                </div>
+            </div>
+
+            <!-- Breathing Guide Widget -->
+            <div class="wellness-widget breathing-guide" onclick="interactWithWidget('breathing')">
+                <div class="widget-header">
+                    <div class="widget-icon breathing-icon">🫁</div>
+                    <div>
+                        <div class="widget-title">Smart Breathing Guide</div>
+                        <div class="widget-subtitle">Personalized breathing exercises</div>
+                    </div>
+                </div>
+                <div class="breathing-circle">Breathe</div>
+                <div class="ai-insight">
+                    AI Recommendation: 4-7-8 breathing technique based on your stress patterns.
+                </div>
+            </div>
+
+            <!-- Stress Monitor Widget -->
+            <div class="wellness-widget stress-monitor" onclick="interactWithWidget('stress')">
+                <div class="widget-header">
+                    <div class="widget-icon stress-icon">📊</div>
+                    <div>
+                        <div class="widget-title">AI Stress Monitor</div>
+                        <div class="widget-subtitle">Real-time wellness tracking</div>
+                    </div>
+                </div>
+                <div class="stress-level">
+                    <div class="stress-indicator"></div>
+                    <span>Stress Level: Low</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%"></div>
+                </div>
+                <div class="ai-insight">
+                    AI Insight: Heart rate variability suggests good stress management. Keep up the great work!
+                </div>
+            </div>
+
+            <!-- Focus Enhancer Widget -->
+            <div class="wellness-widget focus-enhancer" onclick="interactWithWidget('focus')">
+                <div class="widget-header">
+                    <div class="widget-icon focus-icon">🎯</div>
+                    <div>
+                        <div class="widget-title">Focus Enhancer</div>
+                        <div class="widget-subtitle">AI-powered productivity</div>
+                    </div>
+                </div>
+                <div class="focus-timer">
+                    <div class="timer-display">25:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="startTimer()">Start</button>
+                        <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+                        <button class="timer-btn" onclick="resetTimer()">Reset</button>
+                    </div>
+                </div>
+                <div class="ai-insight">
+                    AI Suggestion: Based on your patterns, 25-minute focus sessions work best for you.
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" onclick="toggleWidgets()">Toggle Widgets</button>
+            <button class="control-btn" onclick="recalibrate()">Recalibrate AR</button>
+            <button class="control-btn" onclick="aiAnalysis()">AI Analysis</button>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script>
+        let widgetsVisible = true;
+        let timer = null;
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let timerRunning = false;
+
+        function interactWithWidget(type) {
+            showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} widget activated!`);
+            
+            // Add interactive effects
+            const widgets = document.querySelectorAll('.wellness-widget');
+            widgets.forEach(widget => {
+                widget.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    widget.style.transform = 'scale(1)';
+                }, 150);
+            });
+        }
+
+        function selectMood(emoji) {
+            event.stopPropagation();
+            showNotification(`Mood logged: ${emoji}`);
+            
+            // Update AI insight based on mood
+            const moodWidget = document.querySelector('.mood-tracker .ai-insight');
+            const insights = {
+                '😄': 'Great! Your positive mood suggests high productivity potential.',
+                '😊': 'Good mood detected. Perfect time for creative tasks.',
+                '😐': 'Neutral mood. Consider a short break or light exercise.',
+                '😔': 'Low mood detected. Activating supportive breathing exercises.',
+                '😰': 'Stress detected. Initiating immediate wellness protocols.'
+            };
+            moodWidget.textContent = `AI Analysis: ${insights[emoji]}`;
+        }
+
+        function toggleWidgets() {
+            widgetsVisible = !widgetsVisible;
+            const widgets = document.querySelectorAll('.wellness-widget');
+            widgets.forEach(widget => {
+                widget.style.opacity = widgetsVisible ? '1' : '0.3';
+                widget.style.transform = widgetsVisible ? 'scale(1)' : 'scale(0.8)';
+            });
+            showNotification(widgetsVisible ? 'Widgets shown' : 'Widgets hidden');
+        }
+
+        function recalibrate() {
+            showNotification('AR recalibration complete');
+            
+            // Simulate recalibration animation
+            const frame = document.querySelector('.ar-frame');
+            frame.style.animation = 'none';
+            setTimeout(() => {
+                frame.style.animation = '';
+            }, 100);
+        }
+
+        function aiAnalysis() {
+            showNotification('AI analyzing your wellness patterns...');
+            
+            setTimeout(() => {
+                showNotification('Analysis complete! Check your widgets for insights.');
+                
+                // Update insights in widgets
+                const insights = document.querySelectorAll('.ai-insight');
+                insights.forEach((insight, index) => {
+                    insight.style.background = '#e8f5e8';
+                    insight.style.borderLeft = '4px solid #4caf50';
+                    setTimeout(() => {
+                        insight.style.background = '#f8f9fa';
+                        insight.style.borderLeft = '4px solid #4ecdc4';
+                    }, 2000);
+                });
+            }, 2000);
+        }
+
+        function startTimer() {
+            if (!timerRunning) {
+                timerRunning = true;
+                timer = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerRunning = false;
+                        showNotification('Focus session complete! Take a break.');
+                        timeLeft = 25 * 60;
+                        updateTimerDisplay();
+                    }
+                }, 1000);
+                showNotification('Focus timer started');
+            }
+        }
+
+        function pauseTimer() {
+            if (timerRunning) {
+                clearInterval(timer);
+                timerRunning = false;
+                showNotification('Focus timer paused');
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timerRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+            showNotification('Focus timer reset');
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = document.querySelector('.timer-display');
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize dynamic effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate real-time stress monitoring
+            setInterval(() => {
+                const stressIndicator = document.querySelector('.stress-indicator');
+                const stressLevel = document.querySelector('.stress-level span');
+                const progressFill = document.querySelector('.progress-fill');
+                
+                const stress = Math.random() * 100;
+                let level, color;
+                
+                if (stress < 30) {
+                    level = 'Low';
+                    color = '#4caf50';
+                } else if (stress < 60) {
+                    level = 'Medium';
+                    color = '#ff9800';
+                } else {
+                    level = 'High';
+                    color = '#f44336';
+                }
+                
+                stressIndicator.style.background = color;
+                stressLevel.textContent = `Stress Level: ${level}`;
+                progressFill.style.width = `${stress}%`;
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
